@@ -21,6 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'client_id',
+        'client_secret',
+        'access_token',
+        'refresh_token',
+        'api_domain',
+        'expires_in'
     ];
 
     /**

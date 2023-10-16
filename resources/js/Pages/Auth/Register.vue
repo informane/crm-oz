@@ -9,6 +9,8 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 const form = useForm({
     name: '',
     email: '',
+    client_id: '',
+    client_secret: '',
     password: '',
     password_confirmation: '',
 });
@@ -33,7 +35,6 @@ const submit = () => {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -49,12 +50,40 @@ const submit = () => {
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
-                    required
                     autocomplete="username"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
+
+
+            <div class="mt-4">
+                <InputLabel for="client_id" value="Client ID" />
+
+                <TextInput
+                    id="client_id"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.client_id"
+                />
+
+                <InputError class="mt-2" :message="form.errors.client_id" />
+            </div>
+
+            <div>
+                <InputLabel for="client_secret" value="Client Secret" />
+
+                <TextInput
+                    id="client_secret"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.client_secret"
+                    autofocus
+                />
+
+                <InputError class="mt-2" :message="form.errors.client_secret" />
+            </div>
+
 
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />
@@ -64,7 +93,6 @@ const submit = () => {
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
-                    required
                     autocomplete="new-password"
                 />
 
@@ -79,7 +107,6 @@ const submit = () => {
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
-                    required
                     autocomplete="new-password"
                 />
 

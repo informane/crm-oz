@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ZohoApi::class);
+       // $this->app->singleton(ZohoApi::class, ZohoApi::class);
     }
     /**
      * Register any authentication / authorization services.
