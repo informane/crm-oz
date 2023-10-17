@@ -6,7 +6,9 @@ use App\Models\AccountDeal;
 use App\Services\ZohoApi;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
+use function Symfony\Component\String\folded;
 
 class ZohoController extends Controller
 {
@@ -75,5 +77,17 @@ class ZohoController extends Controller
         } else {
             return Inertia::location('/zoho/list');
         }
+    }
+
+    public function dealCreated(Request $request) {
+        $fh = fopen('log.log', 'w+');
+        fwrite($fh, print_r($request->get('accountId',true)));
+        fclose($fh);
+        /*Log::build([
+            'driver' => 'single',
+            'path' => storage_path('logs/laravel.log'),
+        ])->info('Something happened!');*/
+
+        return response('Hello World', 200);
     }
 }

@@ -30,7 +30,11 @@ class AccountDeal
             'Deal_Name' => "required|string|max:255",
             'Stage' => "max:255"
         ]);
-        return $validator = $this->saveAccountDeal($validator);
+        if (!count($validator->errors())) {
+            return $validator = $this->saveAccountDeal($validator);
+        } else {
+            return $validator;
+        }
 
     }
 
@@ -38,16 +42,24 @@ class AccountDeal
     {
         $zohoApi = new ZohoApi();
 
-        $records = $zohoApi->findAll('Accounts', ['Account_Name', 'Phone', 'Website']);
-
+        $records = $zohoApi->findAll('Accounts', ['id', 'Account_Name', 'Phone', 'Website']);
+        $deals = $zohoApi->findAll('Deals', ['Account_Name', 'Deal_Name', 'Stage']);
+        $dealsAssoc = [];
+        foreach ($deals as $deal) {
+            if(isset($deal->Account_Name->id))
+                $dealsAssoc[$deal->Account_Name->id] = $deal;
+        }
         foreach ($records as $i => $record) {
-
-            $related = $zohoApi->findBy('Deals', ['Account_Name' => $record->id]);
+            if(isset($dealsAssoc[$record->id])) {
+                unset($dealsAssoc[$record->id]->Account_Name);
+                $records[$i] = (object)array_replace((array)$record, (array)$dealsAssoc[$record->id]);
+            }
+            /*$related = $zohoApi->findBy('Deals', ['Account_Name' => $record->id]);
 
             if ($related != null) {
                 unset($related[0]->Account_Name);
                 $records[$i] = (object)array_replace((array)$record, (array)$related[0]);
-            }
+            }*/
         }
 
         return $records;
@@ -65,9 +77,10 @@ class AccountDeal
         }
 
         $this->dealAttributes['Account_Name'] = $result->details->id;
+        $accountId = $result->details->id;
         $result = $zohoApi->save('Deals', $this->dealAttributes);
         if ($result->status == 'error') {
-            $zohoApi->delete('Accounts', $result->details->id);
+            $zohoApi->delete('Accounts', $accountId);
             $validator->errors()->add($result->details->api_name, $result->message);
         }
 

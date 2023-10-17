@@ -55,4 +55,9 @@ Route::middleware(['auth', ZohoValidAccessToken::class])->get(
 Route::middleware(['auth', ZohoValidAccessToken::class])->post(
     '/zoho/save-account', [\App\Http\Controllers\ZohoController::class, 'saveAccountDeal']
 )->name('save');
+
+Route::get(
+    '/zoho/deal-created', [\App\Http\Controllers\ZohoController::class, 'dealCreated']
+);
+
 require __DIR__ . '/auth.php';

@@ -155,6 +155,7 @@ class ZohoApi
         $records = json_decode(Http::withHeaders([
             'Authorization' => "Zoho-oauthtoken {$user->access_token}",
         ])->withOptions(["verify" => $this->verifySsl])
+            //->get("{$user->api_domain}/crm/v5/{$moduleName}/search?{$search_by}={$search_val}")->body());
             ->get("{$user->api_domain}/crm/v5/{$moduleName}/search", ['criteria' => "{$search_by}:equals:$search_val"])->body());
 
         if (isset($records->status) && $records->status == 'error') {
@@ -192,7 +193,8 @@ class ZohoApi
             'Authorization' => "Zoho-oauthtoken {$user->access_token}"
         ])->withOptions(["verify" => $this->verifySsl])
             ->delete("{$user->api_domain}/crm/v5/$moduleName/$id")->body());
-        return $response->status;
+
+        return $response->data[0]->status;
 
 
     }
