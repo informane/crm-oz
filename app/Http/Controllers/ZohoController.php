@@ -79,15 +79,4 @@ class ZohoController extends Controller
         }
     }
 
-    public function dealCreated(Request $request) {
-        $fh = fopen('log.log', 'w+');
-        fwrite($fh, print_r($request->get('accountId',true)));
-        fclose($fh);
-        /*Log::build([
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-        ])->info('Something happened!');*/
-
-        return response('Hello World', 200);
-    }
 }

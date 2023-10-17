@@ -18,13 +18,14 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::location('/zoho/list');
+    /*return Inertia::render('Welcome', [
         'user' => \Illuminate\Support\Facades\Auth::user(),
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-    ]);
+    ]);*/
 });
 
 Route::get('index', function () {
@@ -55,9 +56,5 @@ Route::middleware(['auth', ZohoValidAccessToken::class])->get(
 Route::middleware(['auth', ZohoValidAccessToken::class])->post(
     '/zoho/save-account', [\App\Http\Controllers\ZohoController::class, 'saveAccountDeal']
 )->name('save');
-
-Route::get(
-    '/zoho/deal-created', [\App\Http\Controllers\ZohoController::class, 'dealCreated']
-);
 
 require __DIR__ . '/auth.php';
