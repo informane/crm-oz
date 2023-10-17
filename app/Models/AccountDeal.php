@@ -28,7 +28,7 @@ class AccountDeal
             'Phone' => ["required", "max:255", "regex:/^\\+?[1-9][0-9]{7,14}$/"],
             'Website' => "required|max:255",
             'Deal_Name' => "required|string|max:255",
-            'Stage' => "max:255"
+            'Stage' => "required|string|max:255"
         ]);
         if (!count($validator->errors())) {
             return $validator = $this->saveAccountDeal($validator);
@@ -45,21 +45,27 @@ class AccountDeal
         $records = $zohoApi->findAll('Accounts', ['id', 'Account_Name', 'Phone', 'Website']);
         $deals = $zohoApi->findAll('Deals', ['Account_Name', 'Deal_Name', 'Stage']);
         $dealsAssoc = [];
-        foreach ($deals as $deal) {
-            if(isset($deal->Account_Name->id))
-                $dealsAssoc[$deal->Account_Name->id] = $deal;
-        }
-        foreach ($records as $i => $record) {
-            if(isset($dealsAssoc[$record->id])) {
-                unset($dealsAssoc[$record->id]->Account_Name);
-                $records[$i] = (object)array_replace((array)$record, (array)$dealsAssoc[$record->id]);
+        if(is_array($deals)) {
+            foreach ($deals as $deal) {
+                if (isset($deal->Account_Name->id))
+                    $dealsAssoc[$deal->Account_Name->id] = $deal;
             }
-            /*$related = $zohoApi->findBy('Deals', ['Account_Name' => $record->id]);
+        }
+        if(is_array($records)) {
+            foreach ($records as $i => $record) {
+                if (isset($dealsAssoc[$record->id])) {
+                    unset($dealsAssoc[$record->id]->Account_Name);
+                    $records[$i] = (object)array_replace((array)$record, (array)$dealsAssoc[$record->id]);
+                }
+                /*$related = $zohoApi->findBy('Deals', ['Account_Name' => $record->id]);
 
-            if ($related != null) {
-                unset($related[0]->Account_Name);
-                $records[$i] = (object)array_replace((array)$record, (array)$related[0]);
-            }*/
+                if ($related != null) {
+                    unset($related[0]->Account_Name);
+                    $records[$i] = (object)array_replace((array)$record, (array)$related[0]);
+                }*/
+            }
+        } else {
+            $records = [];
         }
 
         return $records;

@@ -22,7 +22,7 @@ class ZohoController extends Controller
     public function login()
     {
         $user = auth()->user();
-
+        $this->zohoApi = new ZohoApi();
         if ($user->access_token != null) {
             return Inertia::location('/zoho/list');
         } else {
