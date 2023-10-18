@@ -40,8 +40,8 @@ class ZohoApi
         $this->access_type = 'offline';
         $this->client_id = $user->client_id; //'1000.4TM40PBO11NRN05OMOB84KSQUOOMHN '
         $this->client_secret = $user->client_secret;//'f5e57c883b0c78d1bf9cf3ff80ed10854e1f2474ca
-        $this->client_id = '1000.4TM40PBO11NRN05OMOB84KSQUOOMHN';
-        $this->client_secret = 'f5e57c883b0c78d1bf9cf3ff80ed10854e1f2474ca';
+        //$this->client_id = '1000.4TM40PBO11NRN05OMOB84KSQUOOMHN';
+        //$this->client_secret = 'f5e57c883b0c78d1bf9cf3ff80ed10854e1f2474ca';
         $this->verifySsl = false;
     }
 
