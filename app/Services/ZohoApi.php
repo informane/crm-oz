@@ -36,7 +36,7 @@ class ZohoApi
             'ZohoCRM.modules.accounts.ALL',
         ];
         $this->response_type = 'code';
-        $this->redirect_uri = 'http://romas.website/zoho/get-tokens';
+        $this->redirect_uri = 'https://romas.website/zoho/get-tokens';
         $this->access_type = 'offline';
         $this->client_id = $user->client_id;
         $this->client_secret = $user->client_secret;
